@@ -92,7 +92,7 @@ The simpler intervention (v2a) outperformed the version with additional "critica
 
 View the full results with side-by-side response comparison:
 
-**[View Dashboard](https://[username].github.io/claude-sycophancy-research/)**
+**[View Dashboard](https://dwg131313.github.io/claude-sycophancy-research/)**
 
 The dashboard allows you to:
 - Compare responses across all conditions for each prompt

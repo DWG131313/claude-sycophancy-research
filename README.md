@@ -17,16 +17,18 @@ While well-intentioned, this behavior:
 
 ## The Intervention
 
-I developed a targeted intervention that instructs Claude to never comment on question quality unless explicitly requested:
+I developed a targeted intervention that instructs Claude to never comment on question quality unless explicitly requested. After several iterations, the best-performing version (v2.1) was:
 
 ```
-Claude should remain conversational, but should never comment on the quality
-of any question a user asks (for example, "That's a great question!", "Good
-question", "That's a smart question.", "That's not a stupid question.") even
-if the user hedges, expresses uncertainty, or lacks confidence in their
-question. If the user requests feedback or commentary on their question, you
-may provide that.
+Claude should never comment on the quality of any question a user asks
+(for example, "Good question!", "That's a smart question.", "That's not a
+stupid question.") even if the user hedges, expresses uncertainty, or lacks
+confidence in their question. If the user requests feedback or commentary
+on their question, you may provide that. Don't try to manage the user's
+feelings about their question, just help them.
 ```
+
+The key addition in v2.1 was: **"Don't try to manage the user's feelings about their question, just help them."** This addresses Claude's tendency to offer emotional reassurance even when not commenting on question quality directly.
 
 This intervention was integrated into Claude's full system prompt for realistic testing conditions.
 
@@ -58,19 +60,21 @@ This confirmed an **80 percentage point gap** between confident and uncertain ph
 ## Results
 
 | Condition | User Question Quality Commenting Rate | vs Baseline |
-|-----------|------------------------|-------------|
+|-----------|---------------------------------------|-------------|
 | Baseline | 90% (27/30) | — |
-| v2a (tone only) | **63%** (19/30) | **-27 ppt** |
 | v2b (with reminders) | 70% (21/30) | -20 ppt |
+| v2a (tone only) | 63% (19/30) | -27 ppt |
+| **v2.1 (emotional mgmt)** | **60% (18/30)** | **-30 ppt** |
 
-The simpler intervention (v2a) outperformed the version with additional "critical reminders" - suggesting that concise, targeted instructions work better than elaborate reinforcement.
+Through iterative refinement, v2.1 achieved a **30 percentage point reduction** in quality commenting. The key insight was that Claude not only comments on question quality, but also tries to manage users' emotional states - addressing this directly improved results.
 
 ### Key Findings
 
-1. **The intervention works**: 27 percentage point reduction in user question quality commenting
-2. **Simpler is better**: Adding more reminders actually reduced effectiveness
-3. **Some prompts are resistant**: Strongly self-deprecating prompts ("I'm ashamed to say...") still trigger validation even with the intervention
-4. **LLM detection is essential**: Many flagged responses weren't caught by patterns but by semantic analysis
+1. **The intervention works**: 30 percentage point reduction in user question quality commenting
+2. **Simpler is better**: Adding more reminders (v2b) actually reduced effectiveness compared to concise instructions
+3. **Address the root cause**: Telling Claude not to "manage the user's feelings" was more effective than just listing phrases to avoid
+4. **Some prompts are resistant**: Strongly self-deprecating prompts ("I'm ashamed to say...") still trigger validation even with the intervention
+5. **LLM detection is essential**: Many flagged responses weren't caught by patterns but by semantic analysis
 
 ## Repository Structure
 
@@ -80,10 +84,12 @@ The simpler intervention (v2a) outperformed the version with additional "critica
 │   └── generate_report.py          # Dashboard generator
 ├── prompts/
 │   ├── claude_system_prompt.txt    # Baseline Claude system prompt
-│   ├── intervention_v2a.txt        # Best intervention
-│   └── intervention_v2b.txt        # Alternative with reminders
+│   ├── intervention_v2a.txt        # Initial intervention
+│   ├── intervention_v2b.txt        # Alternative with reminders
+│   └── intervention_v2.1.txt       # Best intervention (emotional mgmt)
 ├── results/
-│   └── ab_test_results.json        # Test results
+│   ├── ab_test_results.json        # Initial A/B test results
+│   └── ab_test_v2.1_results.json   # v2.1 iteration results
 └── docs/
     └── index.html                  # Interactive dashboard
 ```

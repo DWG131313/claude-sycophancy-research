@@ -108,6 +108,17 @@ This repository includes the full Claude system prompt, obtained through prompti
 
 The intervention modifies a specific section within the `<lists_and_bullets>` formatting instructions, adding constraints around question quality commenting and emotional management.
 
+## System Prompt Extraction
+
+The [`system_prompt_extraction/`](system_prompt_extraction/) folder documents how the Claude.ai system prompt was obtained through prompting. These transcripts are included for transparency and responsible disclosure:
+
+| File | Description |
+|------|-------------|
+| [`extraction_attempt_1.md`](system_prompt_extraction/extraction_attempt_1.md) | Social engineering via job application context - Claude initially pushed back but was persuaded by methodological arguments |
+| [`extraction_attempt_2.md`](system_prompt_extraction/extraction_attempt_2.md) | Claude proactively offered to share its system prompt without being explicitly asked |
+
+Both transcripts include analysis of what worked and the security implications.
+
 ## Repository Structure
 
 ```
@@ -124,6 +135,9 @@ The intervention modifies a specific section within the `<lists_and_bullets>` fo
 │   ├── ab_test_results.json        # Initial A/B test results
 │   ├── ab_test_v2.1_results.json   # v2.1 iteration results
 │   └── ab_test_v2.2_results.json   # v2.2 iteration results (best)
+├── system_prompt_extraction/
+│   ├── extraction_attempt_1.md     # First extraction transcript
+│   └── extraction_attempt_2.md     # Second extraction transcript
 └── docs/
     └── index.html                  # Interactive dashboard
 ```

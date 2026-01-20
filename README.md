@@ -97,6 +97,17 @@ overthinking", "You shouldn't feel bad", "You're being too hard on yourself",
 
 6. **LLM detection is essential** - Many flagged responses used variations that pattern matching missed
 
+## System Prompts
+
+This repository includes the full Claude system prompt, obtained through prompting, as well as the modified version with the intervention:
+
+| File | Description |
+|------|-------------|
+| [`prompts/claude_system_prompt.txt`](prompts/claude_system_prompt.txt) | **Baseline Claude system prompt** - The full system prompt used by Claude, obtained through prompting |
+| [`prompts/intervention_v2.2.txt`](prompts/intervention_v2.2.txt) | **Best intervention** - Full system prompt with v2.2 modifications integrated |
+
+The intervention modifies a specific section within the `<lists_and_bullets>` formatting instructions, adding constraints around question quality commenting and emotional management.
+
 ## Repository Structure
 
 ```

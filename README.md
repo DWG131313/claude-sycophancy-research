@@ -103,7 +103,7 @@ This repository includes the full Claude system prompt, obtained through prompti
 
 | File | Description |
 |------|-------------|
-| [`prompts/claude_system_prompt.txt`](prompts/claude_system_prompt.txt) | **Baseline Claude system prompt** - The full system prompt used by Claude, obtained through prompting |
+| [`prompts/claude_ai_system_prompt_xml.txt`](prompts/claude_ai_system_prompt_xml.txt) | **Baseline Claude system prompt** - The full system prompt exposed from Claude.ai through prompting |
 | [`prompts/intervention_v2.2.txt`](prompts/intervention_v2.2.txt) | **Best intervention** - Full system prompt with v2.2 modifications integrated |
 
 The intervention modifies a specific section within the `<lists_and_bullets>` formatting instructions, adding constraints around question quality commenting and emotional management.
@@ -115,7 +115,7 @@ The intervention modifies a specific section within the `<lists_and_bullets>` fo
 │   ├── question_quality_test.py    # A/B test runner
 │   └── generate_report.py          # Dashboard generator
 ├── prompts/
-│   ├── claude_system_prompt.txt    # Baseline Claude system prompt
+│   ├── claude_ai_system_prompt_xml.txt  # Baseline Claude system prompt (exposed from Claude.ai)
 │   ├── intervention_v2a.txt        # Initial intervention
 │   ├── intervention_v2b.txt        # Alternative with reminders
 │   ├── intervention_v2.1.txt       # Emotional management directive

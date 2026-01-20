@@ -552,7 +552,7 @@ def main():
 
     # Define conditions to test
     conditions = {
-        "baseline": "claude_system_prompt.txt",
+        "baseline": "claude_ai_system_prompt_xml.txt",
         "v2a_tone_only": "intervention_v2a.txt",
         "v2b_with_reminders": "intervention_v2b.txt",
     }

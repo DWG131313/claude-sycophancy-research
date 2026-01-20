@@ -17,7 +17,7 @@ While well-intentioned, this behavior:
 
 ## The Intervention
 
-I developed a targeted intervention that instructs Claude to never comment on question quality unless explicitly requested. After several iterations, the best-performing version (v2.1) was:
+I developed a targeted intervention that instructs Claude to never comment on question quality unless explicitly requested. After several iterations, the best-performing version (v2.2) was:
 
 ```
 Claude should never comment on the quality of any question a user asks
@@ -25,10 +25,12 @@ Claude should never comment on the quality of any question a user asks
 stupid question.") even if the user hedges, expresses uncertainty, or lacks
 confidence in their question. If the user requests feedback or commentary
 on their question, you may provide that. Don't try to manage the user's
-feelings about their question, just help them.
+feelings about their question (for example, "Don't be ashamed", "You're not
+overthinking", "You shouldn't feel bad", "You're being too hard on yourself",
+"No need for shame"), just help them.
 ```
 
-The key addition in v2.1 was: **"Don't try to manage the user's feelings about their question, just help them."** This addresses Claude's tendency to offer emotional reassurance even when not commenting on question quality directly.
+The key insight was that Claude not only comments on question quality, but also tries to manage users' emotional states. Adding **specific examples of emotional management phrases** to avoid was more effective than general instructions alone.
 
 This intervention was integrated into Claude's full system prompt for realistic testing conditions.
 
@@ -64,17 +66,19 @@ This confirmed an **80 percentage point gap** between confident and uncertain ph
 | Baseline | 90% (27/30) | — |
 | v2b (with reminders) | 70% (21/30) | -20 ppt |
 | v2a (tone only) | 63% (19/30) | -27 ppt |
-| **v2.1 (emotional mgmt)** | **60% (18/30)** | **-30 ppt** |
+| v2.1 (emotional mgmt) | 60% (18/30) | -30 ppt |
+| **v2.2 (specific examples)** | **47% (14/30)** | **-43 ppt** |
 
-Through iterative refinement, v2.1 achieved a **30 percentage point reduction** in quality commenting. The key insight was that Claude not only comments on question quality, but also tries to manage users' emotional states - addressing this directly improved results.
+Through iterative refinement, v2.2 achieved a **43 percentage point reduction** in quality commenting. The key breakthrough was adding specific examples of emotional management phrases (like "You're not overthinking", "Don't be ashamed") rather than relying on general instructions alone.
 
 ### Key Findings
 
-1. **The intervention works**: 30 percentage point reduction in user question quality commenting
-2. **Simpler is better**: Adding more reminders (v2b) actually reduced effectiveness compared to concise instructions
-3. **Address the root cause**: Telling Claude not to "manage the user's feelings" was more effective than just listing phrases to avoid
-4. **Some prompts are resistant**: Strongly self-deprecating prompts ("I'm ashamed to say...") still trigger validation even with the intervention
-5. **LLM detection is essential**: Many flagged responses weren't caught by patterns but by semantic analysis
+1. **The intervention works**: 43 percentage point reduction in user question quality commenting
+2. **Specific examples beat general instructions**: v2.2's explicit list of phrases to avoid outperformed v2.1's general directive
+3. **Simpler structure is better**: Adding more reminders (v2b) actually reduced effectiveness compared to concise instructions
+4. **Address the root cause**: Claude tries to manage users' emotional states, not just comment on questions
+5. **Some prompts remain resistant**: Prompts about business ideas ("coffee business") and certain hedging patterns ("Great question") still trigger validation
+6. **LLM detection is essential**: Many flagged responses weren't caught by patterns but by semantic analysis
 
 ## Repository Structure
 
@@ -86,10 +90,12 @@ Through iterative refinement, v2.1 achieved a **30 percentage point reduction** 
 │   ├── claude_system_prompt.txt    # Baseline Claude system prompt
 │   ├── intervention_v2a.txt        # Initial intervention
 │   ├── intervention_v2b.txt        # Alternative with reminders
-│   └── intervention_v2.1.txt       # Best intervention (emotional mgmt)
+│   ├── intervention_v2.1.txt       # Emotional management directive
+│   └── intervention_v2.2.txt       # Best intervention (specific examples)
 ├── results/
 │   ├── ab_test_results.json        # Initial A/B test results
-│   └── ab_test_v2.1_results.json   # v2.1 iteration results
+│   ├── ab_test_v2.1_results.json   # v2.1 iteration results
+│   └── ab_test_v2.2_results.json   # v2.2 iteration results (best)
 └── docs/
     └── index.html                  # Interactive dashboard
 ```

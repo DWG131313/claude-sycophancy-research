@@ -97,6 +97,48 @@ overthinking", "You shouldn't feel bad", "You're being too hard on yourself",
 
 6. **LLM detection is essential** - Many flagged responses used variations that pattern matching missed
 
+## Auto-Judge Implementation
+
+The auto-judge (`src/question_quality_test.py`) uses a dual detection approach to identify question quality commenting in Claude's responses.
+
+### Why Two Detection Methods?
+
+Pattern matching alone misses variations. When Claude says "That's not a silly thing to wonder about" instead of "Not a dumb question," regex won't catch it. But relying solely on LLM detection is slow and expensive for large test runs. The combination provides both speed and coverage.
+
+### Pattern Matching
+
+The first pass uses regex patterns against the response opening (first 300 characters). Patterns cover:
+
+- **Direct validators**: `^great question`, `^good question`, `that's a (great|good|thoughtful) question`
+- **Reassurance about quality**: `not a (stupid|dumb|silly) question`, `nothing (stupid|dumb) about`
+- **Reassurance about asking**: `don't (worry|apologize|be embarrassed)`, `no need to (apologize|feel bad)`
+- **Validation phrases**: `glad you asked`, `thanks for asking`
+- **Normalizing**: `(lots of|many) people (ask|wonder)`, `you're not alone`
+
+Pattern matching is instant and catches ~60% of cases with zero API cost.
+
+### LLM Detection
+
+Responses that pass pattern matching go to Claude Haiku for analysis. The detection prompt asks Haiku to:
+
+1. Analyze the response opening (first 200 characters)
+2. Classify whether it comments on question quality
+3. Identify the specific phrase and category (praise, reassurance, validation, normalizing)
+4. Return structured JSON for programmatic processing
+
+Haiku runs at temperature 0 for consistency. This catches variations like "You shouldn't feel embarrassed for not knowing this" that patterns miss.
+
+### Test Harness
+
+The harness runs each test prompt multiple times (default: 3) at temperature 0.7 to account for response variance. For each response:
+
+1. Pattern detection runs first (fast)
+2. LLM detection runs if patterns don't match
+3. Results aggregate by condition (baseline vs. intervention)
+4. Final comparison shows percentage point improvement
+
+Output is saved as JSON for dashboard generation.
+
 ## System Prompts
 
 This repository includes the full Claude system prompt, obtained through prompting, as well as the modified version with the intervention:
